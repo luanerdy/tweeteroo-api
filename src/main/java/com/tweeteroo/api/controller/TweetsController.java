@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tweeteroo.api.dto.TweetDTO;
+import com.tweeteroo.api.dto.CreateTweetDTO;
 
 @RestController
 @RequestMapping("/tweets")
@@ -23,6 +23,6 @@ public class TweetsController {
 	}
 
 	@PostMapping
-	public void create(@RequestBody TweetDTO tweet) {
+	public void create(@RequestBody CreateTweetDTO tweet) {
 	}
 }
