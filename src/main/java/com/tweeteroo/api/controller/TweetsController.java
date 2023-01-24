@@ -11,26 +11,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tweeteroo.api.dto.CreateTweetDTO;
+import com.tweeteroo.api.dto.GetTweetsDTO;
 import com.tweeteroo.api.repository.TweetRepository;
+import com.tweeteroo.api.repository.UserRepository;
 import com.tweeteroo.api.model.Tweet;
 
 @RestController
 @RequestMapping("/tweets")
 public class TweetsController {
 	@Autowired
-	private TweetRepository repository;
+	private TweetRepository tweetRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@GetMapping
 	public List<Tweet> getAll() {
-		return repository.findAll();
+		return tweetRepository.findAll();
 	}
 
 	@GetMapping("/{username}")
 	public List<Tweet> getById(@PathVariable String username) {
-		return repository.findAllByUsername(username);
+		return tweetRepository.findAllByUsername(username);
 	}
 
 	@PostMapping
-	public void create(@RequestBody CreateTweetDTO tweet) {
+	public void create(@RequestBody CreateTweetDTO body) {
+		String avatar = userRepository.findByUsername(body.username()).getAvatar();
+		GetTweetsDTO tweet = new GetTweetsDTO(body.username(), avatar, body.tweet());
+		tweetRepository.save(new Tweet(tweet));
 	}
 }
